@@ -16,13 +16,13 @@ exports.createSauces = (req, res, next) => {
 exports.getAllSauces = (req, res, next) => {
   Sauce.find()
     .then(sauces => res.status(200).json(sauces))
-    .catch(error => res.status().json({ error }));
+    .catch(error => res.status(400).json({ error }));
 };
 
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => res.status(200).json(sauce))
-    .catch(error => res.status().json({ error }));
+    .catch(error => res.status(400).json({ error }));
 };
 
 exports.updateOneSauce = (req, res, next) => {
@@ -32,7 +32,7 @@ exports.updateOneSauce = (req, res, next) => {
   } : req.body;
 
   Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Sauce modifiée ! ' }))
+    .then(() => res.status(201).json({ message: 'Sauce modifiée ! ' }))
     .catch(error => res.status(400).json({ error }));
 };
 
@@ -56,7 +56,7 @@ exports.deleteOneSauce = (req, res, next) => {
           .catch(error => res.status(400).json({ error }));
       })
     })
-    .catch(error => res.status().json({ error }));
+    .catch(error => res.status(500).json({ error }));
 };
 
 exports.likeSauce = (req, res, next) => {
@@ -74,7 +74,7 @@ exports.likeSauce = (req, res, next) => {
             $push: { usersLiked: req.body.userId }
           },
           { _id: req.params.id })
-          .then(sauce => res.status(200).json({ message: 'Liked !' }))
+          .then(() => res.status(200).json({ message: 'Liked !' }))
           .catch(error => res.status(400).json({ error }));
       }
 
@@ -117,6 +117,6 @@ exports.likeSauce = (req, res, next) => {
           .catch(error => res.status(400).json({ error }));
       }
     })
-    .catch(error => res.status(404).json({ error }));
+    .catch(() => res.status(400).json({ message: "Sauce non trouvée !" }));
 };
 
