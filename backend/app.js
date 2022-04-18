@@ -6,10 +6,11 @@ const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
 
 require('dotenv').config();
-const userName = process.env.dbUserName;
-const password = process.env.password;
+const userName = process.env.DB_USERNAME;
+const password = process.env.DB_PASSWORD;
+const db_name = process.env.DB_NAME;
 
-mongoose.connect(`mongodb+srv://${userName}:${password}@piquantedatabase.ahpdq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`)
+mongoose.connect(`mongodb+srv://${userName}:${password}@piquantedatabase.ahpdq.mongodb.net/${db_name}?retryWrites=true&w=majority`)
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
