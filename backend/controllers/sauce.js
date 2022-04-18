@@ -1,6 +1,7 @@
 const Sauce = require('../models/sauce');
 const fs = require('fs');
 
+// Creation d'une sauce
 exports.createSauces = (req, res, next) => {
   const saucesObject = JSON.parse(req.body.sauce);
   delete saucesObject._id;
@@ -13,19 +14,24 @@ exports.createSauces = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
+// Récupérer toutes les sauces
 exports.getAllSauces = (req, res, next) => {
   Sauce.find()
     .then(sauces => res.status(200).json(sauces))
     .catch(error => res.status(400).json({ error }));
 };
 
+// Récupérer les infos d'une sauce en particulier
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => res.status(200).json(sauce))
     .catch(error => res.status(400).json({ error }));
 };
 
+// Modifier les infos d'une sauce en particulier
 exports.updateOneSauce = (req, res, next) => {
+
+  // Verifier si il y a une image dans le corps de la nouvelle requete. Si oui la prendre en compte sinon juste prendre le body en compte
   const sauceObject = req.file ? {
     ...JSON.parse(req.body.sauce),
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
@@ -36,6 +42,7 @@ exports.updateOneSauce = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
+// Supprimer une sauce
 exports.deleteOneSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
@@ -59,6 +66,7 @@ exports.deleteOneSauce = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
+// Like ou dislike une sauce
 exports.likeSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => {

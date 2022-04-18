@@ -10,14 +10,17 @@ const userName = process.env.DB_USERNAME;
 const password = process.env.DB_PASSWORD;
 const db_name = process.env.DB_NAME;
 
+// Connection a la BDD
 mongoose.connect(`mongodb+srv://${userName}:${password}@piquantedatabase.ahpdq.mongodb.net/${db_name}?retryWrites=true&w=majority`)
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 const app = express();
 
+// Le corps des requetes sera en json
 app.use(express.json());
 
+// Ajout de CORS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
